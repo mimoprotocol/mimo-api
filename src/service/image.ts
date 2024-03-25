@@ -18,7 +18,7 @@ export default async function handler(context: any) {
           const image = token?.logo || "";
           return image;
         },
-        60 * 60 * 24
+        60
       );
       if (image) {
         return context.redirect(image);
