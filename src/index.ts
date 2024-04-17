@@ -1,20 +1,15 @@
-import { Hono } from 'hono'
 import getRewardTokenImage from './service/getRewardTokenImage'
 import image from './service/image'
 import getTokenFromPlatforms from './service/getTokenFromPlatforms'
+import tokenList from './service/token-list'
 
-const app = new Hono()
+import { app } from './lib/hono'
 
-app.get('/api/getRewardTokenImage/:address', async (c) => {
-  return getRewardTokenImage(c)
-})
-app.get('/api/getTokenFromPlatforms/:platform', async (c) => {
-  return getTokenFromPlatforms(c)
-})
 
-app.get('/api/image/:address',  async(c) => {
-  return image(c)
-})
+app.get('/api/getRewardTokenImage/:address', getRewardTokenImage)
+app.get('/api/getTokenFromPlatforms/:platform', getTokenFromPlatforms)
+app.get('/api/image/:address', image)
+app.get("/api/token-list/:platform", tokenList)
 
 
 export default app
