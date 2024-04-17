@@ -1,2 +1,7 @@
 import { Hono } from 'hono'
-export const app = new Hono()
+import { cors } from "hono/cors"
+
+
+const app = new Hono()
+app.use(cors())
+export { app }
