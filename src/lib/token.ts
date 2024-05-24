@@ -42,8 +42,10 @@ export const getTokenFromPlatforms = async (platform: string) => {
           )
             arr.push(i);
         });
+        console.log('refresh')
         return arr;
       },
-      30
+      30 * 1000,
+      3 * 1000
     );
   };
