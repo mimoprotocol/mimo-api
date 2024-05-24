@@ -1,7 +1,7 @@
 import { MemoryCache, caching } from "cache-manager";
 
 export const getMemoryCache: {
-  cache?: any;
+  cache?: MemoryCache;
   (): Promise<MemoryCache>;
 } = async () => {
   if (!getMemoryCache.cache) {
