@@ -7,6 +7,7 @@ export const getTokenFromPlatforms = async (platform: string) => {
     const value = await cache.getOrSet(
       `getTokenFromPlatforms-${platform}`,
       async () => {
+        console.time('getTokenFromPlatforms')
         let r = await fetch(config.ioPayGraphAPIURL, {
           method: "POST",
           headers: {
@@ -41,7 +42,7 @@ export const getTokenFromPlatforms = async (platform: string) => {
           )
             arr.push(i);
         });
-        console.log('refresh')
+        console.timeEnd('getTokenFromPlatforms')
         return arr;
       },
        {
