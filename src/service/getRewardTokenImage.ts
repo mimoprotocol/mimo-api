@@ -1,15 +1,14 @@
 import _ from "lodash";
-import { getMemoryCache } from "../lib/cache";
 import { getTokenFromPlatforms } from "../lib/token";
+import { cache } from "../lib/cache";
 
 export default async function handler(context: any) {
   const { req, res } = context;
   const { address } = req.param();
-  const memoryCache = await getMemoryCache();
   console.log("address", address);
   try {
     if (address) {
-      const image = await memoryCache.wrap(
+      const image = await cache.getOrSet(
         `image-${address}`,
         async () => {
           const rs = await getTokenFromPlatforms("iotex");
@@ -19,7 +18,9 @@ export default async function handler(context: any) {
           const image = token?.logo || "";
           return image;
         },
-        60 * 60 * 24
+        {
+          ttl: 60 * 60 * 24 * 1000
+        }
       );
       if (image) {
          context.status(200)

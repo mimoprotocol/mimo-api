@@ -3,6 +3,7 @@
     "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
+    "bentocache": "^1.0.0-beta.9",
     "cache-manager": "^5.4.0",
     "ethers": "5.7.2",
     "hono": "^4.0.5",

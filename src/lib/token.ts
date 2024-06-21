@@ -1,11 +1,10 @@
 
-import { getMemoryCache } from "../lib/cache";
+import { cache } from "../lib/cache";
 import { ethers } from "ethers";
 import { config } from "../config";
 
 export const getTokenFromPlatforms = async (platform: string) => {
-    const memoryCache = await getMemoryCache();
-    return memoryCache.wrap(
+    const value = await cache.getOrSet(
       `getTokenFromPlatforms-${platform}`,
       async () => {
         let r = await fetch(config.ioPayGraphAPIURL, {
@@ -45,7 +44,9 @@ export const getTokenFromPlatforms = async (platform: string) => {
         console.log('refresh')
         return arr;
       },
-      30 * 1000,
-      3 * 1000
+       {
+        ttl: 10 * 1000
+       }
     );
+    return value
   };
