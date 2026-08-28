@@ -3,10 +3,31 @@ name: Build and push Docker image
 on:
   push:
     branches: [main]
+  # Tests only (the build job is skipped): a red test belongs on the PR, not
+  # after the merge that has already started building an image.
+  pull_request:
   workflow_dispatch:
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Matches the Dockerfile, so the SIGTERM behaviour is asserted on the
+      # runtime the container actually runs.
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.0.x
+
+      - run: bun install
+
+      - run: bun run test
+
   build:
+    needs: test
+    # A PR gets the test job and stops there; nothing is pushed to GHCR.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
