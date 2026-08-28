@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "bun run --hot src/index.ts",
+    "test": "bun test tests"
   },
   "dependencies": {
     "bentocache": "^1.0.0-beta.9",
