@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { getTokenFromPlatforms } from "../lib/token";
 import { cache } from "../lib/cache";
+import { safeLogoUrl } from "../lib/logo";
 
 export default async function handler(context: any) {
   const { req, res } = context;
@@ -8,7 +9,7 @@ export default async function handler(context: any) {
   console.log("address", address);
   try {
     if (address) {
-      const image = await cache.getOrSet(
+      const raw = await cache.getOrSet(
         `image-${address}`,
         async () => {
           const rs = await getTokenFromPlatforms("iotex");
@@ -22,6 +23,7 @@ export default async function handler(context: any) {
           ttl: 60 * 60 * 24 * 1000
         }
       );
+      const image = safeLogoUrl(raw);
       if (image) {
          context.status(200)
          return context.json(
